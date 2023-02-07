@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { Field, Formik } from 'formik';
 import Addresses from './Addresses';
+import Questions from './Questions';
 
 const CreateProcess = () => {
   return (
@@ -20,6 +21,13 @@ const CreateProcess = () => {
           active: false,
           total: 0,
         },
+        questions: [
+          {
+            title: '',
+            description: '',
+            options: ['', ''],
+          },
+        ],
       }}
       onSubmit={(values) => console.log(values)}
     >
@@ -42,6 +50,7 @@ const CreateProcess = () => {
                 <Field as={Input} id="description" name="description" />
               </FormControl>
               <Addresses />
+              <Questions />
             </VStack>
           </form>
         );

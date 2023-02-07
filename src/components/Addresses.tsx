@@ -26,12 +26,12 @@ const Addresses = () => {
           {values.addresses.map((_, index) => (
             <Box key={index} w="full">
               <FormControl>
-                <FormLabel htmlFor={`Address{index}`}>
+                <FormLabel htmlFor={`address{index}`}>
                   Address {index + 1}
                 </FormLabel>
                 <Field
                   as={Input}
-                  id={`Address{index}`}
+                  id={`address{index}`}
                   name={`addresses.${index}.address`}
                 />
               </FormControl>
