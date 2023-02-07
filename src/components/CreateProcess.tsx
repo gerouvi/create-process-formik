@@ -1,4 +1,11 @@
-import { FormControl, FormLabel, Input, Text, VStack } from '@chakra-ui/react';
+import {
+  Checkbox,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { Field, Formik } from 'formik';
 import Addresses from './Addresses';
 
@@ -8,7 +15,11 @@ const CreateProcess = () => {
       initialValues={{
         title: '',
         description: '',
-        addresses: [{ address: '', weight: '' }],
+        addresses: [{ address: '', weight: 0 }],
+        weightedVote: {
+          active: false,
+          total: 0,
+        },
       }}
       onSubmit={(values) => console.log(values)}
     >
@@ -18,6 +29,10 @@ const CreateProcess = () => {
           <form>
             <VStack as="fieldset" spacing={4} align="flex-start">
               <Text as="legend">Form</Text>
+              <FormControl>
+                <FormLabel htmlFor="weighted">Weighted vote</FormLabel>
+                <Field as={Checkbox} id="weighted" name="weightedVote.active" />
+              </FormControl>
               <FormControl>
                 <FormLabel htmlFor="title">Title</FormLabel>
                 <Field as={Input} id="title" name="title" />
