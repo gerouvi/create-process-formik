@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   FormControl,
   FormLabel,
@@ -52,6 +53,7 @@ const CreateProcess = () => {
           </FormControl>
           <Addresses />
           <Questions />
+          <Button type="submit">Create process</Button>
         </VStack>
       </Form>
     </FormikProvider>

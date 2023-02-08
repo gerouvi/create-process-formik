@@ -7,7 +7,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Field, FieldArray, useFormikContext } from 'formik';
-import Options from './Options';
 
 interface valueProps {
   questions: question[];
@@ -28,6 +27,7 @@ const Questions = () => {
         <>
           {values.questions.map((question, index) => (
             <Box key={index} w="full">
+              {/*Question title/description */}
               <Text>Question {index + 1}</Text>
               <FormControl>
                 <FormLabel htmlFor={`qtitle{index}`}>Title</FormLabel>
@@ -47,7 +47,33 @@ const Questions = () => {
                   name={`questions.${index}.description`}
                 />
               </FormControl>
-              <Options options={question.options} index={index} />
+              {/* <Options options={question.options} index={index} /> */}
+              <FieldArray name={`questions.${index}.options`}>
+                {({ push, remove }) => (
+                  <>
+                    {question.options.map((_, idx) => (
+                      <Box key={idx}>
+                        <FormControl>
+                          <FormLabel htmlFor={`option{index}`}>
+                            Option {idx + 1}
+                          </FormLabel>
+                          <Field
+                            as={Input}
+                            id={`option{index}`}
+                            name={`questions.${index}.options.${idx}`}
+                          />
+                        </FormControl>
+                        <Button type="button" onClick={() => remove(index)}>
+                          Delete option
+                        </Button>
+                      </Box>
+                    ))}
+                    <Button type="button" onClick={() => push('')}>
+                      Add option
+                    </Button>
+                  </>
+                )}
+              </FieldArray>
             </Box>
           ))}
           <Button
