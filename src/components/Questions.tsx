@@ -47,7 +47,7 @@ const Questions = () => {
                   name={`questions.${index}.description`}
                 />
               </FormControl>
-              {/* <Options options={question.options} index={index} /> */}
+              {/* Question options */}
               <FieldArray name={`questions.${index}.options`}>
                 {({ push, remove }) => (
                   <>
