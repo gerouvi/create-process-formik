@@ -1,5 +1,6 @@
 import { Box, Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { Field, FieldArray, useFormikContext } from 'formik';
+import { ChangeEvent } from 'react';
 
 interface valueProps {
   addresses: addresses[];
@@ -17,7 +18,8 @@ interface weightedVote {
 }
 
 const Addresses = () => {
-  const { values } = useFormikContext<valueProps>();
+  const { values, handleChange, setFieldValue } =
+    useFormikContext<valueProps>();
 
   return (
     <FieldArray name="addresses">
@@ -43,6 +45,21 @@ const Addresses = () => {
                     type="number"
                     id={`weight{index}`}
                     name={`addresses.${index}.weight`}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      const totalWeight = values.addresses.reduce(
+                        (acc, curr, idx) => {
+                          if (idx !== index)
+                            return Number(acc) + Number(curr.weight);
+                          return Number(acc);
+                        },
+                        0
+                      );
+                      setFieldValue(
+                        'weightedVote.total',
+                        totalWeight + Number(e.target.value)
+                      );
+                    }}
                   />
                 </FormControl>
               )}
