@@ -1,5 +1,6 @@
 import { Button, VStack } from '@chakra-ui/react';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import Addresses from './Addresses';
 import Header from './Header';
 import Questions from './Questions';
@@ -30,6 +31,8 @@ const CreateProcess = () => {
     onSubmit: (values) => console.log(values),
   });
 
+  const { t } = useTranslation();
+
   return (
     <FormikProvider value={formik}>
       <Form>
@@ -37,7 +40,7 @@ const CreateProcess = () => {
           <Header />
           <Addresses />
           <Questions />
-          <Button type="submit">Create process</Button>
+          <Button type="submit">{t('form:createProcess')}</Button>
         </VStack>
       </Form>
     </FormikProvider>

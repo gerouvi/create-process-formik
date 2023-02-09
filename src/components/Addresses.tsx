@@ -1,6 +1,7 @@
 import { Box, Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { Field, FieldArray, useFormikContext } from 'formik';
 import { ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface valueProps {
   addresses: addresses[];
@@ -9,7 +10,7 @@ interface valueProps {
 
 interface addresses {
   address: string;
-  weight: number;
+  weight: number | undefined;
 }
 
 interface weightedVote {
@@ -20,7 +21,7 @@ interface weightedVote {
 const Addresses = () => {
   const { values, handleChange, setFieldValue } =
     useFormikContext<valueProps>();
-
+  const { t } = useTranslation();
   return (
     <FieldArray name="addresses">
       {({ push, remove }) => (
@@ -29,7 +30,7 @@ const Addresses = () => {
             <Box key={index} w="full">
               <FormControl>
                 <FormLabel htmlFor={`address{index}`}>
-                  Address {index + 1}
+                  {t('form:address', { index: index + 1 })}
                 </FormLabel>
                 <Field
                   as={Input}
@@ -39,7 +40,9 @@ const Addresses = () => {
               </FormControl>
               {values.weightedVote.active && (
                 <FormControl>
-                  <FormLabel htmlFor={`weight{index}`}>Weight</FormLabel>
+                  <FormLabel htmlFor={`weight{index}`}>
+                    {t('form:weight')}
+                  </FormLabel>
                   <Field
                     as={Input}
                     type="number"
@@ -49,9 +52,8 @@ const Addresses = () => {
                       handleChange(e);
                       const totalWeight = values.addresses.reduce(
                         (acc, curr, idx) => {
-                          if (idx !== index)
-                            return Number(acc) + Number(curr.weight);
-                          return Number(acc);
+                          if (idx !== index) return acc + Number(curr.weight);
+                          return acc;
                         },
                         0
                       );
@@ -64,7 +66,7 @@ const Addresses = () => {
                 </FormControl>
               )}
               <Button type="button" onClick={() => remove(index)}>
-                Delete address
+                Delete Address
               </Button>
             </Box>
           ))}

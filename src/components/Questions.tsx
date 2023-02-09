@@ -7,6 +7,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Field, FieldArray, useFormikContext } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 interface valueProps {
   questions: question[];
@@ -20,6 +21,7 @@ interface question {
 
 const Questions = () => {
   const { values } = useFormikContext<valueProps>();
+  const { t } = useTranslation();
 
   return (
     <FieldArray name="questions">
@@ -28,9 +30,11 @@ const Questions = () => {
           {values.questions.map((question, index) => (
             <Box key={index} w="full">
               {/*Question title/description */}
-              <Text>Question {index + 1}</Text>
+              <Text> {t('form:question', { index: index + 1 })}</Text>
               <FormControl>
-                <FormLabel htmlFor={`qtitle{index}`}>Title</FormLabel>
+                <FormLabel htmlFor={`qtitle{index}`}>
+                  {t('title', { ns: 'form' })}
+                </FormLabel>
                 <Field
                   as={Input}
                   id={`qtitle{index}`}
@@ -39,7 +43,7 @@ const Questions = () => {
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor={`qdescription{index}`}>
-                  Description
+                  {t('form:description')}
                 </FormLabel>
                 <Field
                   as={Input}
@@ -55,7 +59,7 @@ const Questions = () => {
                       <Box key={idx}>
                         <FormControl>
                           <FormLabel htmlFor={`option{index}`}>
-                            Option {idx + 1}
+                            {t('option', { ns: 'form', index: idx + 1 })}
                           </FormLabel>
                           <Field
                             as={Input}
