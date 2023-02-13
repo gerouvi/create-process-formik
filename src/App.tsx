@@ -11,7 +11,7 @@ const lngs: any = {
 
 export const App = () => {
   const { i18n } = useTranslation();
-  
+
   return (
     <ChakraProvider theme={theme}>
       <Box textAlign="center" fontSize="xl">
@@ -27,6 +27,7 @@ export const App = () => {
             {lngs[lng].nativeName}
           </Button>
         ))}
+
         <CreateProcess />
       </Box>
     </ChakraProvider>

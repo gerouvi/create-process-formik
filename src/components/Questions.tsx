@@ -1,10 +1,14 @@
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import {
   Box,
-  Button,
+  Flex,
   FormControl,
   FormLabel,
+  HStack,
+  IconButton,
   Input,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import { Field, FieldArray, useFormikContext } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -25,73 +29,119 @@ const Questions = () => {
 
   return (
     <FieldArray name="questions">
-      {({ push }) => (
-        <>
+      {({ push, remove }) => (
+        <Flex
+          as="fieldset"
+          direction="column"
+          gap={4}
+          p={4}
+          bg="gray.100"
+          borderRadius={8}
+        >
+          <HStack
+            justifyContent="space-between"
+            bg="white"
+            p={4}
+            borderRadius={8}
+          >
+            <Text as="legend">{t('form:questions')}</Text>
+            <IconButton
+              type="button"
+              icon={<AddIcon />}
+              aria-label={t('form:aria:addQuestion')}
+              onClick={() =>
+                push({
+                  title: '',
+                  description: '',
+                  options: ['', ''],
+                })
+              }
+            />
+          </HStack>
           {values.questions.map((question, index) => (
-            <Box key={index} w="full">
+            <Box key={index} bg="white" p={4} borderRadius={8}>
               {/*Question title/description */}
-              <Text> {t('form:question', { index: index + 1 })}</Text>
-              <FormControl>
-                <FormLabel htmlFor={`qtitle{index}`}>
-                  {t('title', { ns: 'form' })}
-                </FormLabel>
-                <Field
-                  as={Input}
-                  id={`qtitle{index}`}
-                  name={`questions.${index}.title`}
+
+              <HStack justify="space-between" mb={4}>
+                <Text textDecoration="underline">
+                  {t('form:question', { index: index + 1 })}
+                </Text>
+                <IconButton
+                  type="button"
+                  icon={<DeleteIcon />}
+                  aria-label={t('form:aria:deleteQuestion')}
+                  onClick={() => remove(index)}
                 />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor={`qdescription{index}`}>
-                  {t('form:description')}
-                </FormLabel>
-                <Field
-                  as={Input}
-                  id={`qdescription{index}`}
-                  name={`questions.${index}.description`}
-                />
-              </FormControl>
+              </HStack>
+              <VStack spacing={4}>
+                <FormControl>
+                  <FormLabel htmlFor={`qtitle${index}`}>
+                    {t('title', { ns: 'form' })}
+                  </FormLabel>
+                  <Field
+                    as={Input}
+                    id={`qtitle${index}`}
+                    name={`questions.${index}.title`}
+                    aria-required="true"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor={`qdescription${index}`}>
+                    {t('form:description')}
+                  </FormLabel>
+                  <Field
+                    as={Input}
+                    id={`qdescription${index}`}
+                    name={`questions.${index}.description`}
+                    aria-required="true"
+                  />
+                </FormControl>
+              </VStack>
               {/* Question options */}
               <FieldArray name={`questions.${index}.options`}>
                 {({ push, remove }) => (
                   <>
+                    <HStack justifyContent="space-between" mb={4} mt={8}>
+                      <Text>{t('form:options')}</Text>
+                      <IconButton
+                        type="button"
+                        icon={<AddIcon />}
+                        aria-label={t('form:aria:addOption')}
+                        onClick={() => push('')}
+                      />
+                    </HStack>
                     {question.options.map((_, idx) => (
-                      <Box key={idx}>
+                      <Box key={idx} mb={4}>
                         <FormControl>
-                          <FormLabel htmlFor={`option{index}`}>
-                            {t('option', { ns: 'form', index: idx + 1 })}
-                          </FormLabel>
+                          <HStack justify="space-between" mb={2}>
+                            <FormLabel
+                              htmlFor={`qoption${index}${idx}`}
+                              mt="8px"
+                            >
+                              {t('option', { ns: 'form', index: idx + 1 })}
+                            </FormLabel>
+                            <IconButton
+                              type="button"
+                              icon={<DeleteIcon />}
+                              aria-label={t('form:aria:deleteOption')}
+                              onClick={() => remove(idx)}
+                            />
+                          </HStack>
                           <Field
                             as={Input}
-                            id={`option{index}`}
+                            id={`qoption${index}${idx}`}
                             name={`questions.${index}.options.${idx}`}
+                            aria-required={idx < 2}
                           />
                         </FormControl>
-                        <Button type="button" onClick={() => remove(index)}>
-                          Delete option
-                        </Button>
                       </Box>
                     ))}
-                    <Button type="button" onClick={() => push('')}>
-                      Add option
-                    </Button>
                   </>
                 )}
               </FieldArray>
             </Box>
           ))}
-          <Button
-            onClick={() =>
-              push({
-                title: '',
-                description: '',
-                options: ['', ''],
-              })
-            }
-          >
-            Add question
-          </Button>
-        </>
+        </Flex>
       )}
     </FieldArray>
   );

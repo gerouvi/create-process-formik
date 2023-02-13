@@ -1,4 +1,4 @@
-import { Button, VStack } from '@chakra-ui/react';
+import { Button, Flex, Text } from '@chakra-ui/react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import Addresses from './Addresses';
@@ -36,12 +36,26 @@ const CreateProcess = () => {
   return (
     <FormikProvider value={formik}>
       <Form>
-        <VStack as="fieldset" spacing={4} align="flex-start">
+        <Flex
+          as="fieldset"
+          direction="column"
+          gap={4}
+          m="16px auto"
+          p={4}
+          borderRadius={12}
+          width={{ base: '90%', lg: '650px' }}
+          boxShadow="2px 2px 10px 2px black"
+        >
+          <Text as="h3" textTransform="uppercase" fontWeight="bold">
+            {t('form', { ns: 'form' })}
+          </Text>
           <Header />
           <Addresses />
           <Questions />
-          <Button type="submit">{t('form:createProcess')}</Button>
-        </VStack>
+          <Button type="submit" alignSelf="stretch">
+            {t('form:createProcess')}
+          </Button>
+        </Flex>
       </Form>
     </FormikProvider>
   );
