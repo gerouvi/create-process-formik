@@ -1,35 +1,56 @@
-import { Box, Button, ChakraProvider, theme } from '@chakra-ui/react';
-import i18next from 'i18next';
-import { useTranslation } from 'react-i18next';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import CreateProcess from './components/CreateProcess';
-
-const lngs: any = {
-  en: { nativeName: 'english' },
-  cat: { nativeName: 'català' },
-};
+import { ChakraProvider, theme, useColorMode } from '@chakra-ui/react';
+import {
+  darkTheme,
+  getDefaultWallets,
+  lightTheme,
+  RainbowKitProvider,
+} from '@rainbow-me/rainbowkit';
+import '@rainbow-me/rainbowkit/styles.css';
+import { RouterProvider } from 'react-router-dom';
+import { configureChains, createClient, WagmiConfig } from 'wagmi';
+import { arbitrum, mainnet, optimism, polygon } from 'wagmi/chains';
+import { publicProvider } from 'wagmi/providers/public';
+import router from './router/router';
 
 export const App = () => {
-  const { i18n } = useTranslation();
+  const { chains, provider } = configureChains(
+    [mainnet, polygon, optimism, arbitrum],
+    [publicProvider()]
+  );
+
+  const { connectors } = getDefaultWallets({
+    appName: 'My RainbowKit App',
+    chains,
+  });
+
+  const wagmiClient = createClient({
+    autoConnect: true,
+    connectors,
+    provider,
+  });
+
+  const { colorMode } = useColorMode();
+
+  const rainbowStyles =
+    colorMode === 'light'
+      ? lightTheme({
+          accentColor: '#78D8AA',
+          accentColorForeground: 'white',
+          borderRadius: 'medium',
+        })
+      : darkTheme({
+          accentColor: '#78D8AA',
+          accentColorForeground: 'white',
+          borderRadius: 'medium',
+        });
 
   return (
-    <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <ColorModeSwitcher justifySelf="flex-end" />
-        {Object.keys(lngs).map((lng) => (
-          <Button
-            type="submit"
-            key={lng}
-            onClick={() => i18next.changeLanguage(lng)}
-            isDisabled={i18n.resolvedLanguage === lng}
-            _disabled={{ cursor: 'default' }}
-          >
-            {lngs[lng].nativeName}
-          </Button>
-        ))}
-
-        <CreateProcess />
-      </Box>
-    </ChakraProvider>
+    <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider chains={chains} theme={rainbowStyles}>
+        <ChakraProvider theme={theme}>
+          <RouterProvider router={router} />
+        </ChakraProvider>
+      </RainbowKitProvider>
+    </WagmiConfig>
   );
 };

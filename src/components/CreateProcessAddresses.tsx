@@ -30,10 +30,12 @@ interface weightedVote {
   total: number;
 }
 
-const Addresses = () => {
+const CreateProcessAddresses = () => {
   const { values, handleChange, setFieldValue } =
     useFormikContext<valueProps>();
+
   const { t } = useTranslation();
+
   return (
     <FieldArray name="addresses">
       {({ push, remove }) => (
@@ -63,7 +65,7 @@ const Addresses = () => {
                           type="number"
                           aria-label={t('form:aria:weight')}
                           id={`weight{index}`}
-                          name={`addressw${index}`}
+                          name={`addresses.${index}.weight`}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             handleChange(e);
                             const totalWeight = values.addresses.reduce(
@@ -108,4 +110,4 @@ const Addresses = () => {
   );
 };
 
-export default Addresses;
+export default CreateProcessAddresses;

@@ -1,6 +1,5 @@
 import {
   Box,
-  Checkbox,
   Flex,
   FormControl,
   FormLabel,
@@ -10,7 +9,7 @@ import {
 import { Field } from 'formik';
 import { useTranslation } from 'react-i18next';
 
-const Header = () => {
+const CreateProcessHeader = () => {
   const { t } = useTranslation();
   return (
     <Box p={4} bg="gray.100" borderRadius={8}>
@@ -19,12 +18,6 @@ const Header = () => {
           <Text as="legend" whiteSpace="nowrap">
             {t('form:header')}
           </Text>
-          <FormControl display="flex" justifyContent="end" alignItems="center">
-            <FormLabel htmlFor="weighted" pt={2}>
-              {t('form:weightedVote')}
-            </FormLabel>
-            <Field as={Checkbox} id="weighted" name="weightedVote.active" />
-          </FormControl>
         </Flex>
         <FormControl>
           <FormLabel htmlFor="title">{t('form:title')}</FormLabel>
@@ -44,4 +37,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default CreateProcessHeader;

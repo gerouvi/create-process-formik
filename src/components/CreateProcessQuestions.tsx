@@ -23,7 +23,7 @@ interface question {
   options: string[];
 }
 
-const Questions = () => {
+const CreateProcessQuestions = () => {
   const { values } = useFormikContext<valueProps>();
   const { t } = useTranslation();
 
@@ -147,4 +147,4 @@ const Questions = () => {
   );
 };
 
-export default Questions;
+export default CreateProcessQuestions;

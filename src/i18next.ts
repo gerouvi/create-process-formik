@@ -6,7 +6,7 @@ i18next
   .use(initReactI18next)
   .use(LanguageDetector)
   .init({
-    debug: true,
+    // debug: true,
     fallbackLng: 'en',
     resources: {
       en: {
